@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="161130_kyckling" size="116.400002 184.218918" />
+    <ImageTarget name="161130_ekonomiskjul" size="116.400002 172.069580" />
+    <ImageTarget name="161130_nordstan" size="116.400002 195.869324" />
+  </Tracking>
+</QCARConfig>
