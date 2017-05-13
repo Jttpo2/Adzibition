@@ -31,7 +31,7 @@ public class BackgroundCover : MonoBehaviour
 		sizeToImgTarget ();
 
 		// Move in front of target a tiny bit to not come into glitch conflict with image target. Unnecessary?
-		plane.transform.Translate (new Vector3 (0, -0.1f, 0));
+		plane.transform.Translate (new Vector3 (0, 0.1f, 0));
 
 		// TODO: Scale to width of image target if wide, else scale to height
 
