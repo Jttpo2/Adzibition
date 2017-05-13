@@ -17,7 +17,7 @@ public class BackgroundCover : MonoBehaviour
 		// Set image target as parent
 //		plane.transform.SetParent (thisTransform);
 
-		// Set image targets parent as parent, for correct scaling
+		// Set image target's parent as parent, for correct scaling
 		plane.transform.SetParent (thisTransform.parent);
 
 		// Center on image target
@@ -52,5 +52,6 @@ public class BackgroundCover : MonoBehaviour
 
 		// Scale plane to image target size
 		plane.transform.localScale = new Vector3 (imgTargetHeight / 10f, 0.1f, imgTargetWidth / 10f);
+		plane.transform.localScale /= 100;
 	}
 }
