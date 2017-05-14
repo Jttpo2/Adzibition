@@ -47,7 +47,7 @@ public class ExhibitionController : MonoBehaviour
 		Vector3 targetBoundingBox = target.GetComponent <Renderer> ().bounds.size;
 
 		float artPieceToTargetScalarX = targetBoundingBox.x / artPieceBoundingBox.x;
-//		float artPieceToTargetScalarY = targetBoundingBox.y / artPieceBoundingBox.y;
+		float artPieceToTargetScalarY = targetBoundingBox.y / artPieceBoundingBox.y;
 		float artPieceToTargetScalarZ = targetBoundingBox.z / artPieceBoundingBox.z;
 
 		float artPieceWidthToHeightRatio = artPieceBoundingBox.x / artPieceBoundingBox.y;
@@ -55,18 +55,21 @@ public class ExhibitionController : MonoBehaviour
 	
 		Vector3 newLocalScale = Vector3.one;
 
-		if (artPieceWidthToHeightRatio > targetWidthToHeightRatio) {
-			// Art piece wider in relation to height than target	
+		if (artPieceWidthToHeightRatio > 1) {
+			// Art piece wider than tall
 			newLocalScale = new Vector3 (
 				artPiece.localScale.x * artPieceToTargetScalarX,
-				artPiece.localScale.z * artPieceToTargetScalarX,
+				artPiece.localScale.y * artPieceToTargetScalarX,
 				1f);
+
+
 		} else {
-			// Target wider in relation to height
+			// Art work taller than wide
 			newLocalScale = new Vector3 (
-				artPiece.localScale.x * artPieceToTargetScalarZ,
-				artPiece.localScale.z * artPieceToTargetScalarZ,
+				artPiece.localScale.x * artPieceToTargetScalarY,
+				artPiece.localScale.y * artPieceToTargetScalarY,
 				1f);
+
 		}
 
 		artPiece.localScale = newLocalScale;
@@ -84,8 +87,8 @@ public class ExhibitionController : MonoBehaviour
 		plane.transform.position = imgTarget.position;
 		
 		// Rotate it to stand up
-		Quaternion standUp = Quaternion.Euler (
-			                     new Vector3 (-90, 0, 0));
+//		Quaternion standUp = Quaternion.Euler (
+//			                     new Vector3 (-90, 0, 0));
 //		plane.transform.localRotation = standUp;
 		
 		// Scale to image target size
