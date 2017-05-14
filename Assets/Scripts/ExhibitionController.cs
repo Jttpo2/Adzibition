@@ -86,7 +86,7 @@ public class ExhibitionController : MonoBehaviour
 		// Rotate it to stand up
 		Quaternion standUp = Quaternion.Euler (
 			                     new Vector3 (-90, 0, 0));
-		plane.transform.localRotation = standUp;
+//		plane.transform.localRotation = standUp;
 		
 		// Scale to image target size
 		fitToTarget (plane.transform, imgTarget);
