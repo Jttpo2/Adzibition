@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class ExhibitionController : MonoBehaviour
 {
-	public List<Transform> imageTargets;
+	private List<Transform> imageTargets;
 
 	// Use this for initialization
 	void Start ()
 	{
+		imageTargets = getAllImageTargets ();
+
+		Debug.Log (imageTargets);
 		for (int i = 0; i < imageTargets.Count; i++) {
 			coverWithPlane (imageTargets [i]);
 			matchSpriteChildToTarget (imageTargets [i]);
-//			matchCanvasCubeChildToTarget (imageTargets [i]);
 		}
 	}
 	
@@ -131,8 +133,6 @@ public class ExhibitionController : MonoBehaviour
 		return imgTarget.GetComponentInChildren <SpriteRenderer> ().transform;
 	}
 
-
-
 	private void matchCanvasCubeChildToTarget (Transform imgTarget)
 	{
 		Transform canvas = getCanvasCubeOf (imgTarget);
@@ -150,5 +150,10 @@ public class ExhibitionController : MonoBehaviour
 	{
 		Transform main = canvasCube.Find ("Front");
 		matchToImageTarget (main, imgTarget);
+	}
+
+	private List<Transform> getAllImageTargets ()
+	{
+		return Helper.FindComponentsInChildWithTag<Transform> (transform.FindChild ("Dev").gameObject, "ImageTarget");
 	}
 }
