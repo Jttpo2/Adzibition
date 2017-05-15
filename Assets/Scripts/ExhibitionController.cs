@@ -272,7 +272,11 @@ public class ExhibitionController : MonoBehaviour
 			Vector3 canvasExtents = canvas.GetComponent <Renderer> ().bounds.extents;
 			canvas.Translate (new Vector3 (0f, 0f, -canvasExtents.y));
 
-
+			// Move artWork to on top of canvas
+			if (sprite) {
+				Vector3 canvasBoundingBox = canvas.GetComponent <Renderer> ().bounds.size;
+				sprite.Translate (new Vector3 (0f, 0f, -canvasBoundingBox.y));
+			}
 		}
 	}
 
