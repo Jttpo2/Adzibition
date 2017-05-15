@@ -61,15 +61,12 @@ public class ExhibitionController : MonoBehaviour
 				artPiece.localScale.x * artPieceToTargetScalarX,
 				artPiece.localScale.y * artPieceToTargetScalarX,
 				1f);
-
-
 		} else {
 			// Art work taller than wide
 			newLocalScale = new Vector3 (
 				artPiece.localScale.x * artPieceToTargetScalarY,
 				artPiece.localScale.y * artPieceToTargetScalarY,
 				1f);
-
 		}
 
 		artPiece.localScale = newLocalScale;
