@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="Miles_Davis--Live-Evil" size="31.000000 30.941875" />
     <ImageTarget name="lorensberg_painting" size="50.000000 66.942146" />
     <ImageTarget name="italien" size="50.000000 57.079647" />
     <ImageTarget name="topgun" size="50.000000 50.000000" />
