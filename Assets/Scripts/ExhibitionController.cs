@@ -34,6 +34,7 @@ public class ExhibitionController : MonoBehaviour
 
 		// Scale to image target size
 		scaleToTargetWithRatioIntact (artWork, target);
+//		fitToTransform (artWork, target, true);
 
 		// Move in front of target a tiny bit to not come into glitch conflict with image target. Unnecessary?
 		artWork.transform.Translate (new Vector3 (0, 0, -0.1f));
@@ -104,9 +105,36 @@ public class ExhibitionController : MonoBehaviour
 //			}
 		}
 
-
-
 		artWork.localScale = newLocalScale;
+	}
+
+	private void fitToTransform (Transform fittee, Transform target, bool keepAspectRatio)
+	{
+		Quaternion fitteeRotation = fittee.rotation;
+		Quaternion targetRotation = target.rotation;
+
+		// Temporarily reset rotation
+		fittee.rotation = Quaternion.identity;
+		target.rotation = Quaternion.identity;
+
+		Vector3 targetBoundingBox = target.GetComponent <Renderer> ().bounds.size;
+		Vector3 fitteeBoundingBox = fittee.GetComponent <Renderer> ().bounds.size;
+
+		float fitteeToTargetScalarX = getScalar (fitteeBoundingBox.x, targetBoundingBox.x);
+		float fitteeToTargetScalarY = getScalar (fitteeBoundingBox.y, targetBoundingBox.y);
+		float fitteeToTargetScalarZ = getScalar (fitteeBoundingBox.z, targetBoundingBox.z);
+
+		Vector3 newLocalScale = new Vector3 (
+			                        fittee.localScale.x * fitteeToTargetScalarX,
+			                        fittee.localScale.y * fitteeToTargetScalarY,
+			                        fittee.localScale.z * fitteeToTargetScalarZ
+		                        );
+			
+		fittee.localScale = newLocalScale;
+
+		// Rotate back
+		fittee.rotation = fitteeRotation;
+		target.rotation = targetRotation;
 	}
 
 	private void coverWithPlane (Transform imgTarget)
@@ -165,34 +193,7 @@ public class ExhibitionController : MonoBehaviour
 		}
 	}
 
-	private void fitToTransform (Transform fittee, Transform target, float scale, bool keepAspectRatio)
-	{
-		Quaternion fitteeRotation = fittee.rotation;
-		Quaternion targetRotation = target.rotation;
 
-		// Temporarily reset rotation
-		fittee.rotation = Quaternion.identity;
-		target.rotation = Quaternion.identity;
-
-		Vector3 targetBoundingBox = target.GetComponent <Renderer> ().bounds.size;
-		Vector3 fitteeBoundingBox = fittee.GetComponent <Renderer> ().bounds.size;
-
-		float fitteeToTargetScalarX = getScalar (fitteeBoundingBox.x, targetBoundingBox.x);
-		float fitteeToTargetScalarY = getScalar (fitteeBoundingBox.y, targetBoundingBox.y);
-		float fitteeToTargetScalarZ = getScalar (fitteeBoundingBox.z, targetBoundingBox.z);
-
-		Vector3 newLocalScale = new Vector3 (
-			                        fittee.localScale.x * fitteeToTargetScalarX,
-			                        fittee.localScale.y * fitteeToTargetScalarY,
-			                        fittee.localScale.z * fitteeToTargetScalarZ
-		                        );
-
-		fittee.localScale = newLocalScale;
-
-		// Rotate back
-		fittee.rotation = fitteeRotation;
-		target.rotation = targetRotation;
-	}
 
 	private void matchSpriteChildToTarget (Transform imgTarget)
 	{
@@ -241,7 +242,7 @@ public class ExhibitionController : MonoBehaviour
 
 	private void scaleCanvasCubeTo (Transform canvasCube, Transform artWork)
 	{
-		fitToTransform (canvasCube, artWork, 1, false);
+		fitToTransform (canvasCube, artWork, false);
 	}
 
 	private List<Transform> getAllImageTargets ()
