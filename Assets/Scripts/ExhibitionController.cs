@@ -86,14 +86,14 @@ public class ExhibitionController : MonoBehaviour
 			if (artPieceWidthToHeightRatio > 1) {
 				// Art piece wider than tall
 				newLocalScale = new Vector3 (
-					artPiece.localScale.x * artPieceToTargetScalarX,
-					artPiece.localScale.y * artPieceToTargetScalarX,
+					artPiece.localScale.x * artPieceToTargetScalarZ,
+					artPiece.localScale.y * artPieceToTargetScalarZ,
 					1f);
 			} else {
 				// Art work taller than wide
 				newLocalScale = new Vector3 (
-					artPiece.localScale.x * artPieceToTargetScalarZ,
-					artPiece.localScale.y * artPieceToTargetScalarZ,
+					artPiece.localScale.x * artPieceToTargetScalarX,
+					artPiece.localScale.y * artPieceToTargetScalarX,
 					1f);
 			}
 		}
