@@ -181,8 +181,6 @@ public class ExhibitionController : MonoBehaviour
 		float fitteeToTargetScalarY = getScalar (fitteeBoundingBox.y, targetBoundingBox.y);
 		float fitteeToTargetScalarZ = getScalar (fitteeBoundingBox.z, targetBoundingBox.z);
 
-
-
 		Vector3 newLocalScale = new Vector3 (
 			                        fittee.localScale.x * fitteeToTargetScalarX,
 			                        fittee.localScale.y * fitteeToTargetScalarY,
@@ -190,50 +188,6 @@ public class ExhibitionController : MonoBehaviour
 		                        );
 
 		fittee.localScale = newLocalScale;
-
-	
-
-
-//		Vector3 fitteBoundingBox = getSizeOf (fittee);
-//		Vector3 targetBoundingBox = getSizeOf (target);
-//
-//		float fitteeToTargetScalarX = targetBoundingBox.x / fitteBoundingBox.x;
-//		float fitteeToTargetScalarY = targetBoundingBox.y / fitteBoundingBox.y;
-//		float fitteeToTargetScalarZ = targetBoundingBox.z / fitteBoundingBox.z;
-//
-//		Vector3 newLocalScale = Vector3.one;
-//		if (keepAspectRatio) {
-//			float artPieceWidthToHeightRatio = fitteBoundingBox.x / fitteBoundingBox.z;
-//			float targetWidthToHeightRatio = targetBoundingBox.x / targetBoundingBox.z;
-//
-//			if (Mathf.Abs (artPieceWidthToHeightRatio) > 10) {
-//
-//				Debug.LogError ("Weird width to height ratio, " + target + " ArtPiece: " + artPieceWidthToHeightRatio);
-//			} else if (
-//				Mathf.Abs (targetWidthToHeightRatio) > 10) {
-//				Debug.LogError ("Weird width to height ratio, " + target + " Target: " + artPieceWidthToHeightRatio);
-//			}
-//
-//			if (targetWidthToHeightRatio > 1) {
-//				// Target wider than tall
-//				newLocalScale = new Vector3 (
-//					fittee.localScale.x * fitteeToTargetScalarZ,
-//					fittee.localScale.y * fitteeToTargetScalarZ,
-//					1f);
-//			} else {
-//				// Target taller than wide
-//				newLocalScale = new Vector3 (
-//					fittee.localScale.x * fitteeToTargetScalarX,
-//					fittee.localScale.y * fitteeToTargetScalarX,
-//					1f);
-//			}
-//		} else {
-//			newLocalScale = new Vector3 (
-//				fittee.localScale.x * fitteeToTargetScalarX,
-//				fittee.localScale.y * fitteeToTargetScalarY,
-//				fittee.localScale.z * fitteeToTargetScalarZ);
-//		}
-//		fittee.localScale = newLocalScale;
 
 		// Rotate back
 		fittee.rotation = fitteeRotation;
@@ -287,9 +241,6 @@ public class ExhibitionController : MonoBehaviour
 
 	private void scaleCanvasCubeTo (Transform canvasCube, Transform artWork)
 	{
-//		Transform main = canvasCube.Find ("Top");
-//		fitToTransform (main, artWork, 1, false);
-
 		fitToTransform (canvasCube, artWork, 1, false);
 	}
 
