@@ -67,35 +67,35 @@ public class ExhibitionController : MonoBehaviour
 		if (targetWidthToHeightRatio > 1) {
 			// Target wider than tall
 
-			if (artPieceWidthToHeightRatio > 1) {
-				// Art piece wider than tall
+//			if (artPieceWidthToHeightRatio > 1) {
+			// Art piece wider than tall
 
-				newLocalScale = new Vector3 (
-					artPiece.localScale.x * artPieceToTargetScalarZ,
-					artPiece.localScale.y * artPieceToTargetScalarZ,
-					1f);
-			} else {
-				// Art work taller than wide
-				newLocalScale = new Vector3 (
-					artPiece.localScale.x * artPieceToTargetScalarZ,
-					artPiece.localScale.y * artPieceToTargetScalarZ,
-					1f);
-			}
+			newLocalScale = new Vector3 (
+				artPiece.localScale.x * artPieceToTargetScalarZ,
+				artPiece.localScale.y * artPieceToTargetScalarZ,
+				1f);
+//			} else {
+//				// Art work taller than wide
+//				newLocalScale = new Vector3 (
+//					artPiece.localScale.x * artPieceToTargetScalarZ,
+//					artPiece.localScale.y * artPieceToTargetScalarZ,
+//					1f);
+//			}
 		} else {
 			// Target taller than wide
-			if (artPieceWidthToHeightRatio > 1) {
-				// Art piece wider than tall
-				newLocalScale = new Vector3 (
-					artPiece.localScale.x * artPieceToTargetScalarX,
-					artPiece.localScale.y * artPieceToTargetScalarX,
-					1f);
-			} else {
-				// Art work taller than wide
-				newLocalScale = new Vector3 (
-					artPiece.localScale.x * artPieceToTargetScalarX,
-					artPiece.localScale.y * artPieceToTargetScalarX,
-					1f);
-			}
+//			if (artPieceWidthToHeightRatio > 1) {
+			// Art piece wider than tall
+			newLocalScale = new Vector3 (
+				artPiece.localScale.x * artPieceToTargetScalarX,
+				artPiece.localScale.y * artPieceToTargetScalarX,
+				1f);
+//			} else {
+//				// Art work taller than wide
+//				newLocalScale = new Vector3 (
+//					artPiece.localScale.x * artPieceToTargetScalarX,
+//					artPiece.localScale.y * artPieceToTargetScalarX,
+//					1f);
+//			}
 		}
 
 
