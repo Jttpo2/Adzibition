@@ -15,6 +15,7 @@ public class ExhibitionController : MonoBehaviour
 		for (int i = 0; i < imageTargets.Count; i++) {
 			coverWithPlane (imageTargets [i]);
 			matchSpriteChildToTarget (imageTargets [i]);
+			matchCanvasCubeChildToTarget (imageTargets [i]);
 		}
 	}
 	
@@ -43,10 +44,15 @@ public class ExhibitionController : MonoBehaviour
 		artPiece.transform.localRotation = standUp;
 	}
 
+	private Vector3 getSizeOf (Transform transform)
+	{
+		return transform.GetComponent <Renderer> ().bounds.size;
+	}
+
 	private void scaleToTargetWithRatioIntact (Transform artPiece, Transform target)
 	{
-		Vector3 artPieceBoundingBox = artPiece.GetComponent <Renderer> ().bounds.size;
-		Vector3 targetBoundingBox = target.GetComponent <Renderer> ().bounds.size;
+		Vector3 artPieceBoundingBox = getSizeOf (artPiece);
+		Vector3 targetBoundingBox = getSizeOf (target);
 
 		float artPieceToTargetScalarX = targetBoundingBox.x / artPieceBoundingBox.x;
 		float artPieceToTargetScalarY = targetBoundingBox.y / artPieceBoundingBox.y;
@@ -118,9 +124,9 @@ public class ExhibitionController : MonoBehaviour
 //		Quaternion standUp = Quaternion.Euler (
 //			                     new Vector3 (-90, 0, 0));
 //		plane.transform.localRotation = standUp;
-		
+
 		// Scale to image target size
-		fitToTarget (plane.transform, imgTarget);
+		fitToTarget (plane.transform, imgTarget.GetComponent <Vuforia.ImageTargetBehaviour> (), 0.1f);
 		
 		// Move in front of target a tiny bit to not come into glitch conflict with image target. Unnecessary?
 //		plane.transform.Translate (new Vector3 (0, 0.0001f, 0));
@@ -135,18 +141,103 @@ public class ExhibitionController : MonoBehaviour
 		plane.transform.SetParent (imgTarget);
 	}
 
-	private void fitToTarget (Transform fittee, Transform imgTarget)
+	private void fitToTarget (Transform fittee, Vuforia.ImageTargetBehaviour imgTarget, float scale)
 	{
 		// Get image targe size 
-		Vector2 imgTargetSize = imgTarget.GetComponent <Vuforia.ImageTargetBehaviour> ().GetSize ();
+		Vector2 imgTargetSize = imgTarget.GetSize ();
+
 		float imgTargetWidth = imgTargetSize.x;
 		float imgTargetHeight = imgTargetSize.y;
 		
 		// Scale plane to image target size
 		fittee.transform.localScale = new Vector3 (
-			imgTargetWidth / 10f, 
-			1f / 10f, 
-			imgTargetHeight / 10f);
+			imgTargetWidth * scale, 
+			1f * scale, 
+			imgTargetHeight * scale);
+	}
+
+	private float getScalar (float fittee, float target)
+	{
+		if (Mathf.Abs (fittee) < 0.01f || Mathf.Abs (target) < 0.01f) {
+			return 1f;
+		} else {
+			return target / fittee;
+		}
+	}
+
+	private void fitToTransform (Transform fittee, Transform target, float scale, bool keepAspectRatio)
+	{
+		Quaternion fitteeRotation = fittee.rotation;
+		Quaternion targetRotation = target.rotation;
+
+		// Temporarily reset rotation
+		fittee.rotation = Quaternion.identity;
+		target.rotation = Quaternion.identity;
+
+		Vector3 targetBoundingBox = target.GetComponent <Renderer> ().bounds.size;
+		Vector3 fitteeBoundingBox = fittee.GetComponent <Renderer> ().bounds.size;
+
+		float fitteeToTargetScalarX = getScalar (fitteeBoundingBox.x, targetBoundingBox.x);
+		float fitteeToTargetScalarY = getScalar (fitteeBoundingBox.y, targetBoundingBox.y);
+		float fitteeToTargetScalarZ = getScalar (fitteeBoundingBox.z, targetBoundingBox.z);
+
+
+
+		Vector3 newLocalScale = new Vector3 (
+			                        fittee.localScale.x * fitteeToTargetScalarX,
+			                        fittee.localScale.y * fitteeToTargetScalarY,
+			                        fittee.localScale.z * fitteeToTargetScalarZ
+		                        );
+
+		fittee.localScale = newLocalScale;
+
+	
+
+
+//		Vector3 fitteBoundingBox = getSizeOf (fittee);
+//		Vector3 targetBoundingBox = getSizeOf (target);
+//
+//		float fitteeToTargetScalarX = targetBoundingBox.x / fitteBoundingBox.x;
+//		float fitteeToTargetScalarY = targetBoundingBox.y / fitteBoundingBox.y;
+//		float fitteeToTargetScalarZ = targetBoundingBox.z / fitteBoundingBox.z;
+//
+//		Vector3 newLocalScale = Vector3.one;
+//		if (keepAspectRatio) {
+//			float artPieceWidthToHeightRatio = fitteBoundingBox.x / fitteBoundingBox.z;
+//			float targetWidthToHeightRatio = targetBoundingBox.x / targetBoundingBox.z;
+//
+//			if (Mathf.Abs (artPieceWidthToHeightRatio) > 10) {
+//
+//				Debug.LogError ("Weird width to height ratio, " + target + " ArtPiece: " + artPieceWidthToHeightRatio);
+//			} else if (
+//				Mathf.Abs (targetWidthToHeightRatio) > 10) {
+//				Debug.LogError ("Weird width to height ratio, " + target + " Target: " + artPieceWidthToHeightRatio);
+//			}
+//
+//			if (targetWidthToHeightRatio > 1) {
+//				// Target wider than tall
+//				newLocalScale = new Vector3 (
+//					fittee.localScale.x * fitteeToTargetScalarZ,
+//					fittee.localScale.y * fitteeToTargetScalarZ,
+//					1f);
+//			} else {
+//				// Target taller than wide
+//				newLocalScale = new Vector3 (
+//					fittee.localScale.x * fitteeToTargetScalarX,
+//					fittee.localScale.y * fitteeToTargetScalarX,
+//					1f);
+//			}
+//		} else {
+//			newLocalScale = new Vector3 (
+//				fittee.localScale.x * fitteeToTargetScalarX,
+//				fittee.localScale.y * fitteeToTargetScalarY,
+//				fittee.localScale.z * fitteeToTargetScalarZ);
+//		}
+//		fittee.localScale = newLocalScale;
+
+		// Rotate back
+		fittee.rotation = fitteeRotation;
+		target.rotation = targetRotation;
 	}
 
 	private void matchSpriteChildToTarget (Transform imgTarget)
@@ -166,7 +257,11 @@ public class ExhibitionController : MonoBehaviour
 	{
 		Transform canvas = getCanvasCubeOf (imgTarget);
 		if (canvas) {
-			scaleCanvasCubeTo (canvas, imgTarget);
+			Transform sprite = getFirstSpriteChildOf (imgTarget);
+			if (sprite) {
+				scaleCanvasCubeTo (canvas, sprite);	
+			}
+
 		}
 	}
 
@@ -175,10 +270,10 @@ public class ExhibitionController : MonoBehaviour
 		return imgTarget.Find ("Canvas").transform;
 	}
 
-	private void scaleCanvasCubeTo (Transform canvasCube, Transform imgTarget)
+	private void scaleCanvasCubeTo (Transform canvasCube, Transform artWork)
 	{
-		Transform main = canvasCube.Find ("Front");
-		matchToImageTarget (main, imgTarget);
+		Transform main = canvasCube.Find ("Top");
+		fitToTransform (main, artWork, 1, false);
 	}
 
 	private List<Transform> getAllImageTargets ()
