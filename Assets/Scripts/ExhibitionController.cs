@@ -25,23 +25,23 @@ public class ExhibitionController : MonoBehaviour
 		
 	}
 
-	void matchToImageTarget (Transform artPiece, Transform target)
+	void matchToImageTarget (Transform artWork, Transform target)
 	{
-		artPiece.SetParent (target);
+		artWork.SetParent (target);
 
 		// Center on image target
-		artPiece.position = target.position;
+		artWork.position = target.position;
 
 		// Scale to image target size
-		scaleToTargetWithRatioIntact (artPiece, target);
+		scaleToTargetWithRatioIntact (artWork, target);
 
 		// Move in front of target a tiny bit to not come into glitch conflict with image target. Unnecessary?
-		artPiece.transform.Translate (new Vector3 (0, 0, -0.1f));
+		artWork.transform.Translate (new Vector3 (0, 0, -0.1f));
 
 		// Rotate it to stand up, and turn it to face the camera (90 degrees z and 180 degrees x)
 		Quaternion standUp = Quaternion.Euler (
 			                     new Vector3 (90, 0, 0));
-		artPiece.transform.localRotation = standUp;
+		artWork.transform.localRotation = standUp;
 	}
 
 	private Vector3 getSizeOf (Transform transform)
@@ -49,64 +49,64 @@ public class ExhibitionController : MonoBehaviour
 		return transform.GetComponent <Renderer> ().bounds.size;
 	}
 
-	private void scaleToTargetWithRatioIntact (Transform artPiece, Transform target)
+	private void scaleToTargetWithRatioIntact (Transform artWork, Transform target)
 	{
-		Vector3 artPieceBoundingBox = getSizeOf (artPiece);
+		Vector3 artWorkBoundingBox = getSizeOf (artWork);
 		Vector3 targetBoundingBox = getSizeOf (target);
 
-		float artPieceToTargetScalarX = targetBoundingBox.x / artPieceBoundingBox.x;
-		float artPieceToTargetScalarY = targetBoundingBox.y / artPieceBoundingBox.y;
-		float artPieceToTargetScalarZ = targetBoundingBox.z / artPieceBoundingBox.z;
+		float artWorkToTargetScalarX = targetBoundingBox.x / artWorkBoundingBox.x;
+		float artWorkToTargetScalarY = targetBoundingBox.y / artWorkBoundingBox.y;
+		float artWorkToTargetScalarZ = targetBoundingBox.z / artWorkBoundingBox.z;
 
-		float artPieceWidthToHeightRatio = artPieceBoundingBox.x / artPieceBoundingBox.z;
+		float artWorkWidthToHeightRatio = artWorkBoundingBox.x / artWorkBoundingBox.z;
 		float targetWidthToHeightRatio = targetBoundingBox.x / targetBoundingBox.z;
 	
 		Vector3 newLocalScale = Vector3.one;
 
-		if (Mathf.Abs (artPieceWidthToHeightRatio) > 10) {
+		if (Mathf.Abs (artWorkWidthToHeightRatio) > 10) {
 
-			Debug.LogError ("Weird width to height ratio, " + target + " ArtPiece: " + artPieceWidthToHeightRatio);
+			Debug.LogError ("Weird width to height ratio, " + target + " ArtPiece: " + artWorkWidthToHeightRatio);
 		} else if (
 			Mathf.Abs (targetWidthToHeightRatio) > 10) {
-			Debug.LogError ("Weird width to height ratio, " + target + " Target: " + artPieceWidthToHeightRatio);
+			Debug.LogError ("Weird width to height ratio, " + target + " Target: " + artWorkWidthToHeightRatio);
 		}
 		if (targetWidthToHeightRatio > 1) {
 			// Target wider than tall
 
-//			if (artPieceWidthToHeightRatio > 1) {
+//			if (artWorkWidthToHeightRatio > 1) {
 			// Art piece wider than tall
 
 			newLocalScale = new Vector3 (
-				artPiece.localScale.x * artPieceToTargetScalarZ,
-				artPiece.localScale.y * artPieceToTargetScalarZ,
+				artWork.localScale.x * artWorkToTargetScalarZ,
+				artWork.localScale.y * artWorkToTargetScalarZ,
 				1f);
 //			} else {
 //				// Art work taller than wide
 //				newLocalScale = new Vector3 (
-//					artPiece.localScale.x * artPieceToTargetScalarZ,
-//					artPiece.localScale.y * artPieceToTargetScalarZ,
+//					artWork.localScale.x * artWorkToTargetScalarZ,
+//					artWork.localScale.y * artWorkToTargetScalarZ,
 //					1f);
 //			}
 		} else {
 			// Target taller than wide
-//			if (artPieceWidthToHeightRatio > 1) {
+//			if (artWorkWidthToHeightRatio > 1) {
 			// Art piece wider than tall
 			newLocalScale = new Vector3 (
-				artPiece.localScale.x * artPieceToTargetScalarX,
-				artPiece.localScale.y * artPieceToTargetScalarX,
+				artWork.localScale.x * artWorkToTargetScalarX,
+				artWork.localScale.y * artWorkToTargetScalarX,
 				1f);
 //			} else {
 //				// Art work taller than wide
 //				newLocalScale = new Vector3 (
-//					artPiece.localScale.x * artPieceToTargetScalarX,
-//					artPiece.localScale.y * artPieceToTargetScalarX,
+//					artWork.localScale.x * artWorkToTargetScalarX,
+//					artWork.localScale.y * artWorkToTargetScalarX,
 //					1f);
 //			}
 		}
 
 
 
-		artPiece.localScale = newLocalScale;
+		artWork.localScale = newLocalScale;
 	}
 
 	private void coverWithPlane (Transform imgTarget)
