@@ -52,24 +52,53 @@ public class ExhibitionController : MonoBehaviour
 		float artPieceToTargetScalarY = targetBoundingBox.y / artPieceBoundingBox.y;
 		float artPieceToTargetScalarZ = targetBoundingBox.z / artPieceBoundingBox.z;
 
-		float artPieceWidthToHeightRatio = artPieceBoundingBox.x / artPieceBoundingBox.y;
-		float targetWidthToHeightRatio = targetBoundingBox.x / targetBoundingBox.y;
+		float artPieceWidthToHeightRatio = artPieceBoundingBox.x / artPieceBoundingBox.z;
+		float targetWidthToHeightRatio = targetBoundingBox.x / targetBoundingBox.z;
 	
 		Vector3 newLocalScale = Vector3.one;
 
-		if (artPieceWidthToHeightRatio > 1) {
-			// Art piece wider than tall
-			newLocalScale = new Vector3 (
-				artPiece.localScale.x * artPieceToTargetScalarX,
-				artPiece.localScale.y * artPieceToTargetScalarX,
-				1f);
-		} else {
-			// Art work taller than wide
-			newLocalScale = new Vector3 (
-				artPiece.localScale.x * artPieceToTargetScalarY,
-				artPiece.localScale.y * artPieceToTargetScalarY,
-				1f);
+		if (Mathf.Abs (artPieceWidthToHeightRatio) > 10) {
+
+			Debug.LogError ("Weird width to height ratio, " + target + " ArtPiece: " + artPieceWidthToHeightRatio);
+		} else if (
+			Mathf.Abs (targetWidthToHeightRatio) > 10) {
+			Debug.LogError ("Weird width to height ratio, " + target + " Target: " + artPieceWidthToHeightRatio);
 		}
+		if (targetWidthToHeightRatio > 1) {
+			// Target wider than tall
+
+			if (artPieceWidthToHeightRatio > 1) {
+				// Art piece wider than tall
+
+				newLocalScale = new Vector3 (
+					artPiece.localScale.x * artPieceToTargetScalarX,
+					artPiece.localScale.y * artPieceToTargetScalarX,
+					1f);
+			} else {
+				// Art work taller than wide
+				newLocalScale = new Vector3 (
+					artPiece.localScale.x * artPieceToTargetScalarZ,
+					artPiece.localScale.y * artPieceToTargetScalarZ,
+					1f);
+			}
+		} else {
+			// Target taller than wide
+			if (artPieceWidthToHeightRatio > 1) {
+				// Art piece wider than tall
+				newLocalScale = new Vector3 (
+					artPiece.localScale.x * artPieceToTargetScalarX,
+					artPiece.localScale.y * artPieceToTargetScalarX,
+					1f);
+			} else {
+				// Art work taller than wide
+				newLocalScale = new Vector3 (
+					artPiece.localScale.x * artPieceToTargetScalarZ,
+					artPiece.localScale.y * artPieceToTargetScalarZ,
+					1f);
+			}
+		}
+
+
 
 		artPiece.localScale = newLocalScale;
 	}
