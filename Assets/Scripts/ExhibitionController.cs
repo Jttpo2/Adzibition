@@ -261,6 +261,17 @@ public class ExhibitionController : MonoBehaviour
 			if (sprite) {
 				scaleCanvasCubeTo (canvas, sprite);	
 			}
+			// Rotate to suit artwork
+			canvas.Rotate (new Vector3 (90, 0, 0));
+		
+			// Set thickness of canvas
+			float thickness = 0.03f;
+			canvas.localScale = new Vector3 (canvas.localScale.x, canvas.localScale.y, thickness);
+
+			// Move canvas to on top of background plane
+			Vector3 canvasExtents = canvas.GetComponent <Renderer> ().bounds.extents;
+			canvas.Translate (new Vector3 (0f, 0f, -canvasExtents.y));
+
 
 		}
 	}
@@ -272,8 +283,10 @@ public class ExhibitionController : MonoBehaviour
 
 	private void scaleCanvasCubeTo (Transform canvasCube, Transform artWork)
 	{
-		Transform main = canvasCube.Find ("Top");
-		fitToTransform (main, artWork, 1, false);
+//		Transform main = canvasCube.Find ("Top");
+//		fitToTransform (main, artWork, 1, false);
+
+		fitToTransform (canvasCube, artWork, 1, false);
 	}
 
 	private List<Transform> getAllImageTargets ()
